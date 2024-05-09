@@ -8,10 +8,10 @@
     <ProjectReference Include="..\Opserver.Core\Opserver.Core.csproj" />
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" PrivateAssets="all" />
     <PackageReference Include="BuildWebCompiler" Condition="'$(OS)' == 'Windows_NT'" Version="1.12.405" PrivateAssets="all" />
-    <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.3.13" />
-    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="7.5.1" />
-    <PackageReference Include="StackExchange.Exceptional.AspNetCore" Version="2.2.35" />
-    <PackageReference Include="System.DirectoryServices.AccountManagement" Version="8.0.0" />
+    <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.2.22" />
+    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.35.0" />
+    <PackageReference Include="StackExchange.Exceptional.AspNetCore" Version="2.2.32" />
+    <PackageReference Include="System.DirectoryServices.AccountManagement" Version="6.0.0" />
     <Reference Include="System.Management" />
   </ItemGroup>
   <ItemGroup>
@@ -21,9 +21,5 @@
     <EmbeddedResource Remove="Config\**" />
     <None Remove="Config\**" />
     <None Include="compilerconfig.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" />
-    <PackageReference Update="Nerdbank.GitVersioning" Version="3.6.133" />
   </ItemGroup>
 </Project>

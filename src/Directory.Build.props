@@ -1,7 +1,5 @@
 <Project>
   <PropertyGroup>
-    <LangVersion>8.0</LangVersion>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)Opserver.ruleset</CodeAnalysisRuleSet>
     <!--<GenerateDocumentationFile>true</GenerateDocumentationFile>-->
     <PackageId>$(AssemblyName)</PackageId>

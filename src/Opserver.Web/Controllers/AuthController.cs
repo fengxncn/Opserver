@@ -6,61 +6,58 @@ using Microsoft.Extensions.Options;
 using Opserver.Security;
 using Opserver.Views.Login;
 
-namespace Opserver.Controllers
+namespace Opserver.Controllers;
+
+public partial class AuthController(IOptions<OpserverSettings> settings) : StatusController(settings)
 {
-    public partial class AuthController : StatusController
+    [AllowAnonymous]
+    [Route("login"), HttpGet]
+    public IActionResult Login(string returnUrl)
     {
-        public AuthController(IOptions<OpserverSettings> settings) : base(settings) { }
-
-        [AllowAnonymous]
-        [Route("login"), HttpGet]
-        public IActionResult Login(string returnUrl)
+        if (!Current.Security.IsConfigured || Current.Security.FlowType == SecurityProviderFlowType.None)
         {
-            if (!Current.Security.IsConfigured || Current.Security.FlowType == SecurityProviderFlowType.None)
-            {
-                return View("NoConfiguration");
-            }
-
-            if (returnUrl == "/")
-            {
-                return RedirectToAction(nameof(Login));
-            }
-
-            return View(new LoginModel());
+            return View("NoConfiguration");
         }
 
-        [AllowAnonymous]
-        [Route("login"), HttpPost]
-        public async Task<IActionResult> Login(string user, string pass, string url)
+        if (returnUrl == "/")
         {
-            var returnUrl = url.HasValue() ? url : "~/";
-            if (Current.Security.FlowType == SecurityProviderFlowType.OIDC)
-            {
-                // OpenID Connect needs to go through an authorization flow
-                // before we can login successfully...
-                return RedirectToProvider(returnUrl);
-            }
-
-            if (!Current.Security.TryValidateToken(new UserNamePasswordToken(user, pass), out var claimsPrincipal))
-            {
-                return View(
-                    "Login",
-                    new LoginModel
-                    {
-                        ErrorMessage = "Login failed"
-                    }
-                );
-            }
-
-            await HttpContext.SignInAsync(claimsPrincipal);
-            return Redirect(returnUrl);
-        }
-
-        [Route("logout")]
-        public async Task<ActionResult> Logout()
-        {
-            await HttpContext.SignOutAsync();
             return RedirectToAction(nameof(Login));
         }
+
+        return View(new LoginModel());
+    }
+
+    [AllowAnonymous]
+    [Route("login"), HttpPost]
+    public async Task<IActionResult> Login(string user, string pass, string url)
+    {
+        var returnUrl = url.HasValue() ? url : "~/";
+        if (Current.Security.FlowType == SecurityProviderFlowType.OIDC)
+        {
+            // OpenID Connect needs to go through an authorization flow
+            // before we can login successfully...
+            return RedirectToProvider(returnUrl);
+        }
+
+        if (!Current.Security.TryValidateToken(new UserNamePasswordToken(user, pass), out var claimsPrincipal))
+        {
+            return View(
+                "Login",
+                new LoginModel
+                {
+                    ErrorMessage = "Login failed"
+                }
+            );
+        }
+
+        await HttpContext.SignInAsync(claimsPrincipal);
+        return Redirect(returnUrl);
+    }
+
+    [Route("logout")]
+    public async Task<ActionResult> Logout()
+    {
+        await HttpContext.SignOutAsync();
+        return RedirectToAction(nameof(Login));
     }
 }

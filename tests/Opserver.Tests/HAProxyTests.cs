@@ -1,10 +1,10 @@
 ﻿using Xunit;
 
-namespace Opserver.Tests
+namespace Opserver.Tests;
+
+public class HAProxyTests
 {
-    public class HAProxyTests
-    {
-        public static string DummyData => @"# pxname,svname,qcur,qmax,scur,smax,slim,stot,bin,bout,dreq,dresp,ereq,econ,eresp,wretr,wredis,status,weight,act,bck,chkfail,chkdown,lastchg,downtime,qlimit,pid,iid,sid,throttle,lbtot,tracked,type,rate,rate_lim,rate_max,check_status,check_code,check_duration,hrsp_1xx,hrsp_2xx,hrsp_3xx,hrsp_4xx,hrsp_5xx,hrsp_other,hanafail,req_rate,req_rate_max,req_tot,cli_abrt,srv_abrt,
+    public static string DummyData => @"# pxname,svname,qcur,qmax,scur,smax,slim,stot,bin,bout,dreq,dresp,ereq,econ,eresp,wretr,wredis,status,weight,act,bck,chkfail,chkdown,lastchg,downtime,qlimit,pid,iid,sid,throttle,lbtot,tracked,type,rate,rate_lim,rate_max,check_status,check_code,check_duration,hrsp_1xx,hrsp_2xx,hrsp_3xx,hrsp_4xx,hrsp_5xx,hrsp_other,hanafail,req_rate,req_rate_max,req_tot,cli_abrt,srv_abrt,
 so,ny-web01,0,0,2,81,,13395064,9722134016,103474336732,,0,,0,35,0,0,UP,1,1,0,33,20,139857,4719,,1,1,1,,13395064,,2,33,,127,L7OK,200,22,6,12693042,570796,129622,1452,0,0,,,,875,33,
 so,ny-web02,0,0,1,92,,13613725,9898075500,112380934783,,0,,0,26,0,0,UP,1,1,0,49,26,139832,4876,,1,1,2,,13613725,,2,24,,116,L7OK,200,50,15,12899818,584998,127771,942,0,0,,,,701,22,
 so,ny-web03,0,0,0,90,,12907545,9513697093,98075046208,,0,,0,27,0,0,UP,1,1,0,66,33,139810,5055,,1,1,3,,12907545,,2,39,,114,L7OK,200,33,2,12209805,577319,118436,1848,0,0,,,,468,23,
@@ -105,10 +105,9 @@ processed-ssl-in,FRONTEND,,,0,7,19995,149492,142029239,569682400,0,0,62,,,,,OPEN
 fe_se_one,FRONTEND,,,48,245,19995,1343056,1506987478,46245888779,0,0,73480,,,,,OPEN,,,,,,,,,1,29,0,,,,0,8,0,201,,,,0,2245940,91724,132164,156,421,,18,206,2470405,,,
 fe_stackauth,FRONTEND,,,522,666,20000,13861423,6947938790,17983003223,0,0,4852156,,,,,OPEN,,,,,,,,,1,30,0,,,,0,25,0,81,,,,0,14765959,6978,4833785,360,22932,,51,125,19630015,,,";
 
-        [Fact]
-        public void HAProxyCSVParsing()
-        {
-            // TODO: After StackExchange.Utils.Http interception bits are in
-        }
+    [Fact]
+    public void HAProxyCSVParsing()
+    {
+        // TODO: After StackExchange.Utils.Http interception bits are in
     }
 }
