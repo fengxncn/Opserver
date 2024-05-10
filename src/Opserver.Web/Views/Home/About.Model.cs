@@ -1,8 +1,7 @@
-﻿namespace Opserver.Views.Home
+﻿namespace Opserver.Views.Home;
+
+public class AboutModel
 {
-    public class AboutModel
-    {
-        public bool AutoRefresh { get; set; }
-        public string Filter { get; set; }
-    }
+    public bool AutoRefresh { get; set; }
+    public string Filter { get; set; }
 }

@@ -1,9 +1,8 @@
-﻿namespace Opserver.Data.SQL
-{
-    public interface ISQLVersioned : IMinVersioned
-    {
-        SQLServerEditions SupportedEditions { get; }
+﻿namespace Opserver.Data.SQL;
 
-        string GetFetchSQL(in SQLServerEngine e);
-    }
+public interface ISQLVersioned : IMinVersioned
+{
+    SQLServerEditions SupportedEditions { get; }
+
+    string GetFetchSQL(in SQLServerEngine e);
 }

@@ -1,47 +1,44 @@
-﻿using Opserver.Views.Shared;
-using Microsoft.AspNetCore.Mvc;
-using System.Net;
-using Microsoft.Extensions.Options;
+﻿using System.Net;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Opserver.Helpers;
 using Opserver.Models;
+using Opserver.Views.Shared;
 
-namespace Opserver.Controllers
+namespace Opserver.Controllers;
+
+[AlsoAllow(Roles.Anonymous)]
+public class MiscController(IOptions<OpserverSettings> _settings) : StatusController(_settings)
 {
-    [AlsoAllow(Roles.Anonymous)]
-    public class MiscController : StatusController
+    [Route("no-config")]
+    public ViewResult NoConfig() => View("NoConfiguration");
+
+    [Route("404")]
+    public ViewResult PageNotFound(string title = null, string message = null)
     {
-        public MiscController(IOptions<OpserverSettings> _settings) : base(_settings) { }
+        Response.StatusCode = (int)HttpStatusCode.NotFound;
 
-        [Route("no-config")]
-        public ViewResult NoConfig() => View("NoConfiguration");
-
-        [Route("404")]
-        public ViewResult PageNotFound(string title = null, string message = null)
+        var vd = new PageNotFoundModel
         {
-            Response.StatusCode = (int)HttpStatusCode.NotFound;
+            Title = title,
+            Message = message
+        };
+        return View("PageNotFound", vd);
+    }
 
-            var vd = new PageNotFoundModel
-            {
-                Title = title,
-                Message = message
-            };
-            return View("PageNotFound", vd);
-        }
+    [AllowAnonymous]
+    [Route("denied")]
+    public ActionResult AccessDenied()
+    {
+        Response.StatusCode = (int)HttpStatusCode.Forbidden;
+        return View("~/Views/Shared/AccessDenied.cshtml");
+    }
 
-        [AllowAnonymous]
-        [Route("denied")]
-        public ActionResult AccessDenied()
-        {
-            Response.StatusCode = (int)HttpStatusCode.Forbidden;
-            return View("~/Views/Shared/AccessDenied.cshtml");
-        }
-
-        [Route("error")]
-        public ActionResult ErrorPage()
-        {
-            Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            return View("Error");
-        }
+    [Route("error")]
+    public ActionResult ErrorPage()
+    {
+        Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+        return View("Error");
     }
 }

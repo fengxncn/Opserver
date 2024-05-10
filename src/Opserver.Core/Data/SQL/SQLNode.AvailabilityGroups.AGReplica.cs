@@ -1,108 +1,105 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 using EnumsNET;
 
-namespace Opserver.Data.SQL
+namespace Opserver.Data.SQL;
+
+public partial class SQLNode
 {
-    public partial class SQLNode
+    /// <summary>
+    /// Contains the replication info about this availability group known to this node - will only be complete on the primary
+    /// sys.availability_replicas: http://technet.microsoft.com/en-us/library/ff877883.aspx
+    /// sys.dm_hadr_availability_replica_states: http://msdn.microsoft.com/en-us/library/ff878537.aspx
+    /// sys.dm_hadr_availability_replica_cluster_states: http://msdn.microsoft.com/en-us/library/hh403396.aspx
+    /// </summary>
+    public class AGReplica : ISQLVersioned, IMonitorStatus
     {
-        /// <summary>
-        /// Contains the replication info about this availability group known to this node - will only be complete on the primary
-        /// sys.availability_replicas: http://technet.microsoft.com/en-us/library/ff877883.aspx
-        /// sys.dm_hadr_availability_replica_states: http://msdn.microsoft.com/en-us/library/ff878537.aspx
-        /// sys.dm_hadr_availability_replica_cluster_states: http://msdn.microsoft.com/en-us/library/hh403396.aspx
-        /// </summary>
-        public class AGReplica : ISQLVersioned, IMonitorStatus
+        Version IMinVersioned.MinVersion => SQLServerVersions.SQL2012.RTM;
+        SQLServerEditions ISQLVersioned.SupportedEditions => SQLServerEditions.All;
+
+        public string AvailabilityGroupName { get; internal set; }
+        public Guid? GroupId { get; internal set; }
+        /* Replicas */
+        public Guid? ReplicaId { get; internal set; }
+        public int? ReplicaMetadataId { get; internal set; }
+        public string ReplicaServerName { get; internal set; }
+        public string EndPointUrl { get; internal set; }
+        public AvailabilityModes? AvailabilityMode { get; internal set; }
+        public FailoverModes FailoverMode { get; internal set; }
+        public int? SessionTimeout { get; internal set; }
+        public PriRoleAllowConnections? PrimaryRoleAllowConnections { get; internal set; }
+        public SecRoleAllowConnections? SecondaryRoleAllowConnections { get; internal set; }
+        public DateTime? CreationDate { get; internal set; }
+        public DateTime? ModifiedDate { get; internal set; }
+        public int? BackupPriority { get; internal set; }
+        public string ReadOnlyRoutingUrl { get; internal set; }
+        /* Replica State */
+        public bool? IsLocal { get; internal set; }
+        public ReplicaRoles? Role { get; internal set; }
+        public OperationStates? OperationalState { get; internal set; }
+        public ConnectedStates? ConnectedState { get; internal set; }
+        public RecoveryHealths? RecoveryHealth { get; internal set; }
+        public SynchronizationHealths? SynchronizationHealth { get; internal set; }
+        public int? LastConnectErrorNumber { get; internal set; }
+        public string LastConnectErrorDescription { get; internal set; }
+        public DateTime? LastConnectErrorTimeStamp { get; internal set; }
+        /* Replica Cluster State */
+        public JoinStates JoinState { get; internal set; }
+        /* Replication Info */
+        public int DBCount => Databases?.Count ?? 0;
+        public long TotalLogSendQueueSize => Databases?.Sum(db => db.LogSendQueueSize) ?? 0;
+        public long TotalLogSendRate => Databases?.Sum(db => db.LogSendRate) ?? 0;
+        public long TotalRedoQueueSize => Databases?.Sum(db => db.RedoQueueSize) ?? 0;
+        public long TotalRedoRate => Databases?.Sum(db => db.RedoRate) ?? 0;
+        public long TotalFilestreamRate => Databases?.Sum(db => db.FileStreamSendRate) ?? 0;
+        public decimal BytesSentPerSecond { get; internal set; }
+        public long BytesSentTotal { get; internal set; }
+        public decimal BytesReceivedPerSecond { get; internal set; }
+        public long BytesReceivedTotal { get; internal set; }
+
+        [IgnoreDataMember]
+        public SQLNode ReplicaNode { get; internal set; }
+        public List<AGDatabaseReplica> Databases { get; internal set; }
+
+        public MonitorStatus MonitorStatus
         {
-            Version IMinVersioned.MinVersion => SQLServerVersions.SQL2012.RTM;
-            SQLServerEditions ISQLVersioned.SupportedEditions => SQLServerEditions.All;
-
-            public string AvailabilityGroupName { get; internal set; }
-            public Guid? GroupId { get; internal set; }
-            /* Replicas */
-            public Guid? ReplicaId { get; internal set; }
-            public int? ReplicaMetadataId { get; internal set; }
-            public string ReplicaServerName { get; internal set; }
-            public string EndPointUrl { get; internal set; }
-            public AvailabilityModes? AvailabilityMode { get; internal set; }
-            public FailoverModes FailoverMode { get; internal set; }
-            public int? SessionTimeout { get; internal set; }
-            public PriRoleAllowConnections? PrimaryRoleAllowConnections { get; internal set; }
-            public SecRoleAllowConnections? SecondaryRoleAllowConnections { get; internal set; }
-            public DateTime? CreationDate { get; internal set; }
-            public DateTime? ModifiedDate { get; internal set; }
-            public int? BackupPriority { get; internal set; }
-            public string ReadOnlyRoutingUrl { get; internal set; }
-            /* Replica State */
-            public bool? IsLocal { get; internal set; }
-            public ReplicaRoles? Role { get; internal set; }
-            public OperationStates? OperationalState { get; internal set; }
-            public ConnectedStates? ConnectedState { get; internal set; }
-            public RecoveryHealths? RecoveryHealth { get; internal set; }
-            public SynchronizationHealths? SynchronizationHealth { get; internal set; }
-            public int? LastConnectErrorNumber { get; internal set; }
-            public string LastConnectErrorDescription { get; internal set; }
-            public DateTime? LastConnectErrorTimeStamp { get; internal set; }
-            /* Replica Cluster State */
-            public JoinStates JoinState { get; internal set; }
-            /* Replication Info */
-            public int DBCount => Databases?.Count ?? 0;
-            public long TotalLogSendQueueSize => Databases?.Sum(db => db.LogSendQueueSize) ?? 0;
-            public long TotalLogSendRate => Databases?.Sum(db => db.LogSendRate) ?? 0;
-            public long TotalRedoQueueSize => Databases?.Sum(db => db.RedoQueueSize) ?? 0;
-            public long TotalRedoRate => Databases?.Sum(db => db.RedoRate) ?? 0;
-            public long TotalFilestreamRate => Databases?.Sum(db => db.FileStreamSendRate) ?? 0;
-            public decimal BytesSentPerSecond { get; internal set; }
-            public long BytesSentTotal { get; internal set; }
-            public decimal BytesReceivedPerSecond { get; internal set; }
-            public long BytesReceivedTotal { get; internal set; }
-
-            [IgnoreDataMember]
-            public SQLNode ReplicaNode { get; internal set; }
-            public List<AGDatabaseReplica> Databases { get; internal set; }
-
-            public MonitorStatus MonitorStatus
+            get
             {
-                get
+                // Don't alert on empty AGs
+                if (Databases.Count == 0)
                 {
-                    // Don't alert on empty AGs
-                    if (Databases.Count == 0)
-                    {
-                        return MonitorStatus.Good;
-                    }
-                    if (SynchronizationHealth.HasValue)
-                    {
-                        return SynchronizationHealth.Value switch
-                        {
-                            SynchronizationHealths.NotHealthy => MonitorStatus.Critical,
-                            SynchronizationHealths.PartiallyHealthy => MonitorStatus.Warning,
-                            //case SynchronizationHealths.Healthy:
-                            _ => MonitorStatus.Good,
-                        };
-                    }
-                    return Databases.GetWorstStatus();
+                    return MonitorStatus.Good;
                 }
+                if (SynchronizationHealth.HasValue)
+                {
+                    return SynchronizationHealth.Value switch
+                    {
+                        SynchronizationHealths.NotHealthy => MonitorStatus.Critical,
+                        SynchronizationHealths.PartiallyHealthy => MonitorStatus.Warning,
+                        //case SynchronizationHealths.Healthy:
+                        _ => MonitorStatus.Good,
+                    };
+                }
+                return Databases.GetWorstStatus();
             }
+        }
 
-            public string MonitorStatusReason
+        public string MonitorStatusReason
+        {
+            get
             {
-                get
+                if (Databases.Count > 0 && SynchronizationHealth.HasValue)
                 {
-                    if (Databases.Count > 0 && SynchronizationHealth.HasValue)
-                    {
-                        if (SynchronizationHealth == SynchronizationHealths.Healthy)
-                            return null;
-                        return "Sync health: " + SynchronizationHealth.Value.AsString(EnumFormat.Description);
-                    }
-                    return Databases.GetReasonSummary();
+                    if (SynchronizationHealth == SynchronizationHealths.Healthy)
+                        return null;
+                    return "Sync health: " + SynchronizationHealth.Value.AsString(EnumFormat.Description);
                 }
+                return Databases.GetReasonSummary();
             }
+        }
 
-            // Why? Because MS doesn't consider DMV perf important, and it's 3-4x faster to temp table 
-            // the results then join when many DBs are in an availability group
-            public string GetFetchSQL(in SQLServerEngine e) => @"
+        // Why? Because MS doesn't consider DMV perf important, and it's 3-4x faster to temp table 
+        // the results then join when many DBs are in an availability group
+        public string GetFetchSQL(in SQLServerEngine e) => @"
 Select * Into #ar From sys.availability_replicas;
 Select * Into #ars From sys.dm_hadr_availability_replica_states;
 Select * Into #arcs From sys.dm_hadr_availability_replica_cluster_states;
@@ -141,6 +138,5 @@ Drop Table #ar;
 Drop Table #ars;
 Drop Table #arcs;
 ";
-        }
     }
 }

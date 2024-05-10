@@ -1,9 +1,8 @@
-﻿using StackExchange.Exceptional;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Opserver.Helpers;
 using Opserver.Models;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
+using StackExchange.Exceptional;
 
 namespace Opserver.Controllers;
 
@@ -20,6 +19,8 @@ public class AdminController(IOptions<OpserverSettings> _settings) : StatusContr
     /// <summary>
     /// Access our error log.
     /// </summary>
+#pragma warning disable ASP0018 // Unused route parameter
     [Route("admin/errors/{resource?}/{subResource?}"), AlsoAllow(Roles.LocalRequest)]
+#pragma warning restore ASP0018 // Unused route parameter
     public Task InvokeErrorHandler() => ExceptionalMiddleware.HandleRequestAsync(HttpContext);
 }

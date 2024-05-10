@@ -10,7 +10,7 @@
     <PackageReference Include="BuildWebCompiler" Condition="'$(OS)' == 'Windows_NT'" Version="1.12.405" PrivateAssets="all" />
     <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.3.13" />
     <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="7.5.1" />
-    <PackageReference Include="StackExchange.Exceptional.AspNetCore" Version="2.2.35" />
+    <PackageReference Include="StackExchange.Exceptional.AspNetCore" Version="2.2.36" />
     <PackageReference Include="System.DirectoryServices.AccountManagement" Version="8.0.0" />
     <Reference Include="System.Management" />
   </ItemGroup>

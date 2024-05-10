@@ -1,8 +1,7 @@
-﻿namespace Opserver
+﻿namespace Opserver;
+
+public interface IOverallStatusCount
 {
-    public interface IOverallStatusCount
-    {
-        int Count { get; }
-        string Tooltip { get; }
-    }
+    int Count { get; }
+    string Tooltip { get; }
 }

@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Opserver.Controllers
+namespace Opserver.Controllers;
+
+[AttributeUsage(AttributeTargets.Method)]
+public sealed class DefaultRoute(string template) : RouteAttribute(template)
 {
-    [AttributeUsage(AttributeTargets.Method)]
-    public sealed class DefaultRoute : RouteAttribute
-    {
-        private static Dictionary<Type, DefaultRoute> AllRoutes => new Dictionary<Type, DefaultRoute>();
+    private static Dictionary<Type, DefaultRoute> AllRoutes => [];
 
-        public DefaultRoute(string template) : base(template) { }
-
-        public static DefaultRoute GetFor(Type t) => AllRoutes.TryGetValue(t, out var route) ? route : null;
-    }
+    public static DefaultRoute GetFor(Type t) => AllRoutes.TryGetValue(t, out var route) ? route : null;
 }

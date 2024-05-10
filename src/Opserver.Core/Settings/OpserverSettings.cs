@@ -1,7 +1,6 @@
-﻿namespace Opserver
+﻿namespace Opserver;
+
+public class OpserverSettings
 {
-    public class OpserverSettings
-    {
-        public GlobalSettings Global { get; set; } = new GlobalSettings();
-    }
+    public GlobalSettings Global { get; set; } = new GlobalSettings();
 }

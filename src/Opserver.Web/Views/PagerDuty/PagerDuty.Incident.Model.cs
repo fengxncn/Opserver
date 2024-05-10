@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using Opserver.Data.PagerDuty;
+﻿using Opserver.Data.PagerDuty;
 
-namespace Opserver.Views.PagerDuty
+namespace Opserver.Views.PagerDuty;
+
+public class PagerDutyIncidentModel
 {
-    public class PagerDutyIncidentModel
-    {
-        public Incident Incident { get; set; }
-        public List<LogEntry> Logs { get; set; }
-    }
+    public Incident Incident { get; set; }
+    public List<LogEntry> Logs { get; set; }
 }

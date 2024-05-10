@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Opserver.Helpers;
+﻿namespace Opserver.Helpers;
 
 public class OpserverConfigException : Exception
 {

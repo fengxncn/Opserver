@@ -1,17 +1,9 @@
-﻿using System.Collections.Generic;
-using Opserver.Data;
+﻿using Opserver.Data;
 
-namespace Opserver.Views.Shared.Guages
+namespace Opserver.Views.Shared.Guages;
+
+public class CircleModel(string label, IEnumerable<IMonitorStatus> items)
 {
-    public class CircleModel
-    {
-        public string Label { get; set; }
-        public IEnumerable<IMonitorStatus> Items { get; set; }
-
-        public CircleModel(string label, IEnumerable<IMonitorStatus> items)
-        {
-            Label = label;
-            Items = items;
-        }
-    }
+    public string Label { get; set; } = label;
+    public IEnumerable<IMonitorStatus> Items { get; set; } = items;
 }

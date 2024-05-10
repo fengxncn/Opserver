@@ -1,6 +1,5 @@
-﻿namespace Opserver.Views.Hub
+﻿namespace Opserver.Views.Hub;
+
+public class HubModel
 {
-    public class HubModel
-    {
-    }
 }

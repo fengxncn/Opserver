@@ -1,12 +1,9 @@
-﻿using System.Collections.Generic;
+﻿namespace Opserver.Data.HAProxy;
 
-namespace Opserver.Data.HAProxy
+/// <summary>
+/// Represents an HAProxy backend for a proxy
+/// </summary>
+public class Backend : Item
 {
-    /// <summary>
-    /// Represents an HAProxy backend for a proxy
-    /// </summary>
-    public class Backend : Item
-    {
-        public List<Server> Servers { get; internal set; }
-    }
+    public List<Server> Servers { get; internal set; }
 }

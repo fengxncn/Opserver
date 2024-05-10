@@ -1,5 +1,6 @@
 <Project>
   <PropertyGroup>
+    <ImplicitUsings>enable</ImplicitUsings>
     <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)Opserver.ruleset</CodeAnalysisRuleSet>
     <!--<GenerateDocumentationFile>true</GenerateDocumentationFile>-->
     <PackageId>$(AssemblyName)</PackageId>

@@ -1,10 +1,9 @@
-﻿namespace Opserver.Data.HAProxy
+﻿namespace Opserver.Data.HAProxy;
+
+public enum StatusType
 {
-    public enum StatusType
-    {
-        Frontend = 0,
-        Backend = 1,
-        Server = 2,
-        Socket = 3
-    }
+    Frontend = 0,
+    Backend = 1,
+    Server = 2,
+    Socket = 3
 }

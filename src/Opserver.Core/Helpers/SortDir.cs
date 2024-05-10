@@ -1,8 +1,7 @@
-﻿namespace Opserver
+﻿namespace Opserver;
+
+public enum SortDir
 {
-    public enum SortDir
-    {
-        Asc,
-        Desc
-    }
+    Asc,
+    Desc
 }

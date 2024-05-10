@@ -1,11 +1,9 @@
-﻿using System;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 
-namespace Opserver
+namespace Opserver;
+
+public interface IMinVersioned
 {
-    public interface IMinVersioned
-    {
-        [IgnoreDataMember]
-        Version MinVersion { get; }
-    }
+    [IgnoreDataMember]
+    Version MinVersion { get; }
 }

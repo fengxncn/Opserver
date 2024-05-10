@@ -1,7 +1,6 @@
-﻿namespace Opserver.Views.Shared
+﻿namespace Opserver.Views.Shared;
+
+public class TopRefreshModel
 {
-    public class TopRefreshModel
-    {
-        public string Tab { get; set; }
-    }
+    public string Tab { get; set; }
 }

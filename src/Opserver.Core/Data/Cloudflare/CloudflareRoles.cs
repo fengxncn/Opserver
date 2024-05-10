@@ -1,8 +1,7 @@
-﻿namespace Opserver.Data.Cloudflare
+﻿namespace Opserver.Data.Cloudflare;
+
+public static class CloudflareRoles
 {
-    public static class CloudflareRoles
-    {
-        public const string Admin = nameof(CloudflareModule) + ":" + nameof(Admin);
-        public const string Viewer = nameof(CloudflareModule) + ":" + nameof(Viewer);
-    }
+    public const string Admin = nameof(CloudflareModule) + ":" + nameof(Admin);
+    public const string Viewer = nameof(CloudflareModule) + ":" + nameof(Viewer);
 }

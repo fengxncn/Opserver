@@ -1,8 +1,7 @@
-﻿namespace Opserver.Views.Login
+﻿namespace Opserver.Views.Login;
+
+public class LoginModel
 {
-    public class LoginModel
-    {
-        public string Message { get; set; }
-        public string ErrorMessage { get; set; }
-    }
+    public string Message { get; set; }
+    public string ErrorMessage { get; set; }
 }

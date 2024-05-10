@@ -1,7 +1,6 @@
-﻿namespace Opserver.Data.HAProxy
+﻿namespace Opserver.Data.HAProxy;
+
+public class Server : Item
 {
-    public class Server : Item
-    {
-        public string Name => ServerName;
-    }
+    public string Name => ServerName;
 }

@@ -1,41 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿namespace Opserver.Data.SQL;
 
-namespace Opserver.Data.SQL
+public partial class SQLInstance
 {
-    public partial class SQLInstance
+    private Cache<List<PerfCounterRecord>> _perfCounters;
+    public Cache<List<PerfCounterRecord>> PerfCounters =>
+        _perfCounters ??= GetSqlCache(nameof(PerfCounters), conn =>
+        {
+            var sql = GetFetchSQL<PerfCounterRecord>();
+            return conn.QueryAsync<PerfCounterRecord>(sql, new {maxEvents = 60});
+        });
+
+    public long? BatchesPerSec => (long?)GetPerfCounter("SQL Statistics", "Batch Requests/sec", "")?.CalculatedValue;
+
+    public PerfCounterRecord GetPerfCounter(string category, string name, string instance)
     {
-        private Cache<List<PerfCounterRecord>> _perfCounters;
-        public Cache<List<PerfCounterRecord>> PerfCounters =>
-            _perfCounters ??= GetSqlCache(nameof(PerfCounters), conn =>
-            {
-                var sql = GetFetchSQL<PerfCounterRecord>();
-                return conn.QueryAsync<PerfCounterRecord>(sql, new {maxEvents = 60});
-            });
+        // TODO Split fields on fetch and compare each rather than a concat per lookup
+        var objectName = ObjectName + ":" + category;
+        return PerfCounters.Data?.FirstOrDefault(c => c.ObjectName == objectName && c.CounterName == name && c.InstanceName == instance);
+    }
 
-        public long? BatchesPerSec => (long?)GetPerfCounter("SQL Statistics", "Batch Requests/sec", "")?.CalculatedValue;
+    public class PerfCounterRecord : ISQLVersioned
+    {
+        Version IMinVersioned.MinVersion => SQLServerVersions.SQL2000.RTM;
+        SQLServerEditions ISQLVersioned.SupportedEditions => SQLServerEditions.All;
 
-        public PerfCounterRecord GetPerfCounter(string category, string name, string instance)
-        {
-            // TODO Split fields on fetch and compare each rather than a concat per lookup
-            var objectName = ObjectName + ":" + category;
-            return PerfCounters.Data?.FirstOrDefault(c => c.ObjectName == objectName && c.CounterName == name && c.InstanceName == instance);
-        }
+        public string ObjectName { get; internal set; }
+        public string CounterName { get; internal set; }
+        public string InstanceName { get; internal set; }
+        public long CurrentValue { get; internal set; }
+        public decimal CalculatedValue { get; internal set; }
+        public int Type { get; internal set; }
 
-        public class PerfCounterRecord : ISQLVersioned
-        {
-            Version IMinVersioned.MinVersion => SQLServerVersions.SQL2000.RTM;
-            SQLServerEditions ISQLVersioned.SupportedEditions => SQLServerEditions.All;
-
-            public string ObjectName { get; internal set; }
-            public string CounterName { get; internal set; }
-            public string InstanceName { get; internal set; }
-            public long CurrentValue { get; internal set; }
-            public decimal CalculatedValue { get; internal set; }
-            public int Type { get; internal set; }
-
-            internal const string FetchSQL = @"
+        internal const string FetchSQL = @"
 Declare @PCounters Table (object_name nvarchar(128),
                           counter_name nvarchar(128),
                           instance_name nvarchar(128),
@@ -108,14 +104,13 @@ Select cc.object_name ObjectName,
         And pc.cntr_type In (537003264, 1073874176)
         And pbc.cntr_type = 1073939712";
 
-            public string GetFetchSQL(in SQLServerEngine e)
+        public string GetFetchSQL(in SQLServerEngine e)
+        {
+            if (e.Version < SQLServerVersions.SQL2005.RTM)
             {
-                if (e.Version < SQLServerVersions.SQL2005.RTM)
-                {
-                    return FetchSQL.Replace("dm_os_performance_counters", "sysperfinfo");
-                }
-                return FetchSQL;
+                return FetchSQL.Replace("dm_os_performance_counters", "sysperfinfo");
             }
+            return FetchSQL;
         }
     }
 }

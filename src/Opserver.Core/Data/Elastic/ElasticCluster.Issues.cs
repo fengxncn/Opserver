@@ -1,17 +1,16 @@
 ﻿using System.Collections.Generic;
 
-namespace Opserver.Data.Elastic
-{
-    public partial class ElasticCluster : IIssuesProvider
-    {
-        string IIssuesProvider.Name => "Elastic";
+namespace Opserver.Data.Elastic;
 
-        public IEnumerable<Issue> GetIssues()
+public partial class ElasticCluster : IIssuesProvider
+{
+    string IIssuesProvider.Name => "Elastic";
+
+    public IEnumerable<Issue> GetIssues()
+    {
+        if (MonitorStatus != MonitorStatus.Good && LastPoll.HasValue)
         {
-            if (MonitorStatus != MonitorStatus.Good && LastPoll.HasValue)
-            {
-                yield return new Issue<ElasticCluster>(this, "Elastic", Name) { IsCluster = true };
-            }
+            yield return new Issue<ElasticCluster>(this, "Elastic", Name) { IsCluster = true };
         }
     }
 }

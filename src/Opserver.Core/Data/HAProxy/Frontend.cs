@@ -1,9 +1,8 @@
-﻿namespace Opserver.Data.HAProxy
+﻿namespace Opserver.Data.HAProxy;
+
+/// <summary>
+/// Represents a HAProxy Frontend for a proxy
+/// </summary>
+public class Frontend : Item
 {
-    /// <summary>
-    /// Represents a HAProxy Frontend for a proxy
-    /// </summary>
-    public class Frontend : Item
-    {
-    }
 }

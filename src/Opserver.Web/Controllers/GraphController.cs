@@ -1,6 +1,5 @@
-﻿namespace Opserver.Controllers
+﻿namespace Opserver.Controllers;
+
+public partial class GraphController : StatusController
 {
-    public partial class GraphController : StatusController
-    {
-    }
 }

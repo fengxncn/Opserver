@@ -1,23 +1,20 @@
-﻿using System.Collections.Generic;
+﻿namespace Opserver.Data.Redis;
 
-namespace Opserver.Data.Redis
+public class RedisReplicationGroup
 {
-    public class RedisReplicationGroup
+    public string Name { get; }
+    public List<RedisHost> Hosts { get; internal set; }
+
+    public RedisReplicationGroup(string name, List<RedisHost> hosts)
     {
-        public string Name { get; }
-        public List<RedisHost> Hosts { get; internal set; }
+        Name = name;
+        Hosts = hosts;
 
-        public RedisReplicationGroup(string name, List<RedisHost> hosts)
+        foreach (var h in hosts)
         {
-            Name = name;
-            Hosts = hosts;
-
-            foreach (var h in hosts)
-            {
-                h.ReplicationGroup = this;
-            }
+            h.ReplicationGroup = this;
         }
-
-        public override string ToString() => Name;
     }
+
+    public override string ToString() => Name;
 }

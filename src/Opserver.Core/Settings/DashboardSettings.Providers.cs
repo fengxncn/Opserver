@@ -1,34 +1,30 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿namespace Opserver;
 
-namespace Opserver
+public class ProvidersSettings
 {
-    public class ProvidersSettings
+    public BosunSettings Bosun { get; set; }
+    public OrionSettings Orion { get; set; }
+    public WMISettings WMI { get; set; }
+    public SignalFxSettings SignalFx { get; set; }
+
+    public bool Any() => All.Any(p => p != null);
+
+    public IEnumerable<IProviderSettings> All
     {
-        public BosunSettings Bosun { get; set; }
-        public OrionSettings Orion { get; set; }
-        public WMISettings WMI { get; set; }
-        public SignalFxSettings SignalFx { get; set; }
-
-        public bool Any() => All.Any(p => p != null);
-
-        public IEnumerable<IProviderSettings> All
+        get
         {
-            get
-            {
-                yield return Bosun;
-                yield return Orion;
-                yield return WMI;
-                yield return SignalFx;
-            }
+            yield return Bosun;
+            yield return Orion;
+            yield return WMI;
+            yield return SignalFx;
         }
     }
+}
 
-    public interface IProviderSettings
-    {
-        bool Enabled { get; }
-        string Name { get; }
+public interface IProviderSettings
+{
+    bool Enabled { get; }
+    string Name { get; }
 
-        void Normalize();
-    }
+    void Normalize();
 }

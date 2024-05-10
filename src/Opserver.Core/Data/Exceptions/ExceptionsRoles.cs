@@ -1,8 +1,7 @@
-﻿namespace Opserver.Data.Exceptions
+﻿namespace Opserver.Data.Exceptions;
+
+public static class ExceptionsRoles
 {
-    public static class ExceptionsRoles
-    {
-        public const string Admin = nameof(ExceptionsModule) + ":" + nameof(Admin);
-        public const string Viewer = nameof(ExceptionsModule) + ":" + nameof(Viewer);
-    }
+    public const string Admin = nameof(ExceptionsModule) + ":" + nameof(Admin);
+    public const string Viewer = nameof(ExceptionsModule) + ":" + nameof(Viewer);
 }

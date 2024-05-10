@@ -1,7 +1,6 @@
-﻿namespace Opserver.Helpers
+﻿namespace Opserver.Helpers;
+
+public static class Singleton<T> where T : new()
 {
-    public static class Singleton<T> where T : new()
-    {
-        public static readonly T Instance = new T();
-    }
+    public static readonly T Instance = new();
 }

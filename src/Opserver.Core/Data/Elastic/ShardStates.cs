@@ -1,10 +1,9 @@
-﻿namespace Opserver.Data.Elastic
+﻿namespace Opserver.Data.Elastic;
+
+public static class ShardStates
 {
-    public static class ShardStates
-    {
-        public const string Unassigned = "UNASSIGNED";
-        public const string Initializing = "INITIALIZING";
-        public const string Started = "STARTED";
-        public const string Relocating = "RELOCATING";
-    }
+    public const string Unassigned = "UNASSIGNED";
+    public const string Initializing = "INITIALIZING";
+    public const string Started = "STARTED";
+    public const string Relocating = "RELOCATING";
 }

@@ -1,14 +1,7 @@
-﻿namespace Opserver.Security
-{
-    public class UserNamePasswordToken : ISecurityProviderToken
-    {
-        public UserNamePasswordToken(string userName, string password)
-        {
-            UserName = userName;
-            Password = password;
-        }
+﻿namespace Opserver.Security;
 
-        public string UserName { get; }
-        public string Password { get; }
-    }
+public class UserNamePasswordToken(string userName, string password) : ISecurityProviderToken
+{
+    public string UserName { get; } = userName;
+    public string Password { get; } = password;
 }
